@@ -1,28 +1,36 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
-	"github.com/mitchellh/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	c := cli.NewCLI("cm", "0.0.1")
-	c.Args = os.Args[1:]
-	c.Commands = map[string]cli.CommandFactory{
-		"template": func() (cli.Command, error) {
-			return &cli.MockCommand{}, nil
-		},
-		"clear": func() (cli.Command, error) {
-			return &cli.MockCommand{}, nil
+	app := &cli.App{
+		Commands: []*cli.Command{
+			{
+				Name:  "template",
+				Usage: "Set up template for commit message",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("TODO")
+					return nil
+				},
+			},
+			{
+				Name:  "clear",
+				Usage: "Unset current template",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("TODO")
+					return nil
+				},
+			},
 		},
 	}
 
-	exitStatus, err := c.Run()
-	if err != nil {
-		log.Println(err)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
-
-	os.Exit(exitStatus)
 }
