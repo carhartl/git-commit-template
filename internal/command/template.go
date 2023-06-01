@@ -2,6 +2,7 @@ package command
 
 import (
 	"os"
+	"os/exec"
 	"text/template"
 
 	"github.com/urfave/cli/v2"
@@ -36,6 +37,14 @@ var TemplateCommand = &cli.Command{
 			Issue string
 			Pair  string
 		}{c.String("issue-ref"), c.String("pair")})
+
+		if !c.Bool("dry-run") {
+			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()
+			if err != nil {
+				panic(err)
+			}
+		}
+
 		return nil
 	},
 }

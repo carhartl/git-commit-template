@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 
 	"github.com/urfave/cli/v2"
@@ -62,7 +63,28 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 	}
 }
 
-func TestConfigureGitTemplate(t *testing.T) {}
+func TestConfigureGitCommitTemplate(t *testing.T) {
+	teardown := setup()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+
+	_ = TemplateCommand.Run(c, []string{"template"}...)
+
+	// Pass default value to git config to avoid command exiting with 1, causing panic here...
+	config, err := exec.Command("git", "config", "--local", "commit.template").Output()
+	if err != nil {
+		t.Errorf("Expected Git config not applied")
+		return
+	}
+	expected := ".git/.gitmessage.txt"
+	actual := strings.TrimSpace(string(config))
+	if actual != expected {
+		t.Errorf("Unexpected Git config applied: wanted %q, got %q", expected, actual)
+	}
+}
 
 func ExampleTemplateCommand_dryRunBasic() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
