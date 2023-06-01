@@ -26,7 +26,6 @@ var TemplateCommand = &cli.Command{
 				Pair  string
 			}{c.String("issue-ref"), c.String("pair")})
 		}
-
 		return nil
 	},
 }
