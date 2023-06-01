@@ -2,6 +2,7 @@ package command
 
 import (
 	"flag"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -30,7 +31,7 @@ func TestCreateTemplateFile(t *testing.T) {
 	teardown := setupTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
@@ -46,7 +47,7 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 	teardown := setupTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
@@ -67,7 +68,7 @@ func TestSetCommitTemplateGitConfig(t *testing.T) {
 	teardown := setupTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
