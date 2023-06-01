@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func setup() func() {
+func setupTemplateTest() func() {
 	currentDir, _ := os.Getwd()
 	dir, err := os.MkdirTemp(os.TempDir(), "test")
 	if err != nil {
@@ -27,7 +27,7 @@ func setup() func() {
 }
 
 func TestCreateTemplateFile(t *testing.T) {
-	teardown := setup()
+	teardown := setupTemplateTest()
 	defer teardown()
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
@@ -43,7 +43,7 @@ func TestCreateTemplateFile(t *testing.T) {
 }
 
 func TestWriteMessageToTemplateFile(t *testing.T) {
-	teardown := setup()
+	teardown := setupTemplateTest()
 	defer teardown()
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
@@ -63,8 +63,8 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 	}
 }
 
-func TestConfigureGitCommitTemplate(t *testing.T) {
-	teardown := setup()
+func TestSetCommitTemplateGitConfig(t *testing.T) {
+	teardown := setupTemplateTest()
 	defer teardown()
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
