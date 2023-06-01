@@ -73,7 +73,6 @@ func TestConfigureGitCommitTemplate(t *testing.T) {
 
 	_ = TemplateCommand.Run(c, []string{"template"}...)
 
-	// Pass default value to git config to avoid command exiting with 1, causing panic here...
 	config, err := exec.Command("git", "config", "--local", "commit.template").Output()
 	if err != nil {
 		t.Errorf("Expected Git config not applied")
