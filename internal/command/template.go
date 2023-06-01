@@ -1,9 +1,14 @@
 package command
 
 import (
-	"fmt"
+	"os"
+	"text/template"
 
 	"github.com/urfave/cli/v2"
+)
+
+var message = template.Must(
+	template.New("message").Parse("Subject\n\nSome context/description\n{{if . }}\nAddresses: {{.}}\n{{end}}"),
 )
 
 var TemplateCommand = &cli.Command{
@@ -11,10 +16,11 @@ var TemplateCommand = &cli.Command{
 	Usage: "Set up template for commit message",
 	Flags: []cli.Flag{
 		&cli.BoolFlag{Name: "dry-run", Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},
+		&cli.StringFlag{Name: "issue-ref", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
 	},
 	Action: func(c *cli.Context) error {
 		if c.Bool("dry-run") {
-			fmt.Fprintf(c.App.Writer, "Subject\n\nSome context/description\n")
+			_ = message.Execute(os.Stdout, c.String("issue-ref"))
 		}
 
 		return nil
