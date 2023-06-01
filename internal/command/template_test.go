@@ -3,9 +3,66 @@ package command
 import (
 	"flag"
 	"os"
+	"os/exec"
+	"testing"
 
 	"github.com/urfave/cli/v2"
 )
+
+func setup() func() {
+	currentDir, _ := os.Getwd()
+	dir, err := os.MkdirTemp(os.TempDir(), "test")
+	if err != nil {
+		panic(err)
+	}
+
+	_ = os.Chdir(dir)
+	_ = exec.Command("git", "init").Run()
+
+	return func() {
+		_ = os.Chdir(currentDir)
+		defer os.RemoveAll(dir)
+	}
+}
+
+func TestCreateTemplateFile(t *testing.T) {
+	teardown := setup()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+
+	_ = TemplateCommand.Run(c, []string{"template"}...)
+
+	_, err := os.Stat(".git/.gitmessage.txt")
+	if err != nil {
+		t.Errorf("Expected .git/.gitmessage.txt to exist, but got %v", err)
+	}
+}
+
+func TestWriteMessageToTemplateFile(t *testing.T) {
+	teardown := setup()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+
+	_ = TemplateCommand.Run(c, []string{"template"}...)
+
+	content, err := os.ReadFile(".git/.gitmessage.txt")
+	if err != nil {
+		panic(err)
+	}
+	message := string(content)
+	expected := "Subject\n\nSome context/description\n"
+	if message != expected {
+		t.Errorf("Expected message content does not match")
+	}
+}
+
+func TestConfigureGitTemplate(t *testing.T) {}
 
 func ExampleTemplateCommand_dryRunBasic() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}

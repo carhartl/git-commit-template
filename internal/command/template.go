@@ -25,6 +25,16 @@ var TemplateCommand = &cli.Command{
 				Issue string
 				Pair  string
 			}{c.String("issue-ref"), c.String("pair")})
+		} else {
+			f, err := os.Create(".git/.gitmessage.txt")
+			if err != nil {
+				panic(err)
+			}
+			defer f.Close()
+			_ = message.Execute(f, struct {
+				Issue string
+				Pair  string
+			}{c.String("issue-ref"), c.String("pair")})
 		}
 		return nil
 	},
