@@ -20,22 +20,22 @@ var TemplateCommand = &cli.Command{
 		&cli.StringFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author to add to template", Value: ""},
 	},
 	Action: func(c *cli.Context) error {
+		var f *os.File
 		if c.Bool("dry-run") {
-			_ = message.Execute(os.Stdout, struct {
-				Issue string
-				Pair  string
-			}{c.String("issue-ref"), c.String("pair")})
+			f = os.Stdout
 		} else {
-			f, err := os.Create(".git/.gitmessage.txt")
+			var err error
+			f, err = os.Create(".git/.gitmessage.txt")
 			if err != nil {
 				panic(err)
 			}
 			defer f.Close()
-			_ = message.Execute(f, struct {
-				Issue string
-				Pair  string
-			}{c.String("issue-ref"), c.String("pair")})
 		}
+
+		_ = message.Execute(f, struct {
+			Issue string
+			Pair  string
+		}{c.String("issue-ref"), c.String("pair")})
 		return nil
 	},
 }
