@@ -13,10 +13,3 @@ release:
   draft: true
   replace_existing_draft: true
   prerelease: auto
-brews:
-  - name: git-commit-template
-    tap:
-      owner: carhartl
-      name: homebrew-tap
-    dependencies:
-      - name: git
