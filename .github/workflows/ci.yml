@@ -19,8 +19,6 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - name: Build
-        run: go build -v ./...
       - name: Lint
         # Third-party action, pin to commit SHA!
         # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
