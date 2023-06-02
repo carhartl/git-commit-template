@@ -58,7 +58,7 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 		panic(err)
 	}
 	message := string(content)
-	expected := "Subject\n\nSome context/description\n"
+	expected := "Subject (keep under 50 characters)\n\nContext/description (what and why)"
 	if message != expected {
 		t.Errorf("Expected message content does not match")
 	}
@@ -96,9 +96,9 @@ func ExampleTemplateCommand_dryRunBasic() {
 	_ = TemplateCommand.Run(c, []string{"template", "--dry-run"}...)
 
 	// Output:
-	// Subject
+	// Subject (keep under 50 characters)
 	//
-	// Some context/description
+	// Context/description (what and why)
 }
 
 func ExampleTemplateCommand_dryRunWithIssueRef() {
@@ -112,9 +112,9 @@ func ExampleTemplateCommand_dryRunWithIssueRef() {
 	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--issue-ref", "#123"}...)
 
 	// Output:
-	// Subject
+	// Subject (keep under 50 characters)
 	//
-	// Some context/description
+	// Context/description (what and why)
 	//
 	// Addresses: #123
 }
@@ -130,9 +130,9 @@ func ExampleTemplateCommand_dryRunWithCoAuthor() {
 	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
-	// Subject
+	// Subject (keep under 50 characters)
 	//
-	// Some context/description
+	// Context/description (what and why)
 	//
 	// Co-authored-by: John Doe <john@example.com>
 }
@@ -149,9 +149,9 @@ func ExampleTemplateCommand_dryRunWithAll() {
 	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
-	// Subject
+	// Subject (keep under 50 characters)
 	//
-	// Some context/description
+	// Context/description (what and why)
 	//
 	// Addresses: #123
 	//

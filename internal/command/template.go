@@ -9,7 +9,7 @@ import (
 )
 
 var message = template.Must(
-	template.New("message").Parse("Subject\n\nSome context/description\n{{if .Issue}}\nAddresses: {{.Issue}}\n{{end}}{{if .Pair}}\nCo-authored-by: {{.Pair}}\n{{end}}"),
+	template.New("message").Parse("Subject (keep under 50 characters)\n\nContext/description (what and why){{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .Pair}}\n\nCo-authored-by: {{.Pair}}{{end}}"),
 )
 
 var TemplateCommand = &cli.Command{
