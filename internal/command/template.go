@@ -28,7 +28,7 @@ var TemplateCommand = &cli.Command{
 			var err error
 			f, err = os.Create(".git/.gitmessage.txt")
 			if err != nil {
-				panic(err)
+				return cli.Exit("Saving template file failed", 1)
 			}
 			defer f.Close()
 		}
@@ -41,7 +41,7 @@ var TemplateCommand = &cli.Command{
 		if !c.Bool("dry-run") {
 			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()
 			if err != nil {
-				panic(err)
+				return cli.Exit("Updating Git config failed", 1)
 			}
 		}
 
