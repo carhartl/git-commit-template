@@ -37,11 +37,11 @@ func TestRemoveTemplateFile(t *testing.T) {
 		panic(err)
 	}
 
-	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{ClearCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{UnsetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
-	_ = ClearCommand.Run(c, []string{"clear"}...)
+	_ = UnsetTemplateCommand.Run(c, []string{"unset"}...)
 
 	// If the respective file is no longer present, os.Stat returns an error, thus we must expect an error here
 	// if the file has been correctly removed!
@@ -62,11 +62,11 @@ func TestUnsetCommitTemplateGitConfig(t *testing.T) {
 		panic(err)
 	}
 
-	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{ClearCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{UnsetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
-	_ = ClearCommand.Run(c, []string{"clear"}...)
+	_ = UnsetTemplateCommand.Run(c, []string{"unset"}...)
 
 	// If the respective config is not set, git exits with 1, thus we must expect an error here
 	// if the config has been correctly removed!

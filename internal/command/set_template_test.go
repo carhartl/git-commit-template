@@ -11,7 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func setupTemplateTest() func() {
+func setupSetTemplateTest() func() {
 	currentDir, _ := os.Getwd()
 	dir, err := os.MkdirTemp(os.TempDir(), "test")
 	if err != nil {
@@ -28,14 +28,14 @@ func setupTemplateTest() func() {
 }
 
 func TestCreateTemplateFile(t *testing.T) {
-	teardown := setupTemplateTest()
+	teardown := setupSetTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set"}...)
 
 	_, err := os.Stat(".git/.gitmessage.txt")
 	if err != nil {
@@ -44,14 +44,14 @@ func TestCreateTemplateFile(t *testing.T) {
 }
 
 func TestWriteMessageToTemplateFile(t *testing.T) {
-	teardown := setupTemplateTest()
+	teardown := setupSetTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set"}...)
 
 	content, err := os.ReadFile(".git/.gitmessage.txt")
 	if err != nil {
@@ -65,14 +65,14 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 }
 
 func TestSetCommitTemplateGitConfig(t *testing.T) {
-	teardown := setupTemplateTest()
+	teardown := setupSetTemplateTest()
 	defer teardown()
 
-	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{TemplateCommand}}
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set"}...)
 
 	config, err := exec.Command("git", "config", "--local", "commit.template").Output()
 	if err != nil {
@@ -86,14 +86,14 @@ func TestSetCommitTemplateGitConfig(t *testing.T) {
 	}
 }
 
-func ExampleTemplateCommand_dryRunBasic() {
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+func ExampleSetTemplateCommand_dryRunBasic() {
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
 	_ = set.Parse([]string{"--dry-run"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template", "--dry-run"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -101,15 +101,15 @@ func ExampleTemplateCommand_dryRunBasic() {
 	// Context/description (what and why)
 }
 
-func ExampleTemplateCommand_dryRunWithIssueRef() {
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+func ExampleSetTemplateCommand_dryRunWithIssueRef() {
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
 	set.String("issue-ref", "#123", "")
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--issue-ref", "#123"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "#123"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -119,15 +119,15 @@ func ExampleTemplateCommand_dryRunWithIssueRef() {
 	// Addresses: #123
 }
 
-func ExampleTemplateCommand_dryRunWithCoAuthor() {
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
 	set.String("pair", "John Doe <john@example.com>", "")
 	_ = set.Parse([]string{"--dry-run", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--pair", "John Doe <john@example.com>"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -137,8 +137,8 @@ func ExampleTemplateCommand_dryRunWithCoAuthor() {
 	// Co-authored-by: John Doe <john@example.com>
 }
 
-func ExampleTemplateCommand_dryRunWithAll() {
-	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{TemplateCommand}}
+func ExampleSetTemplateCommand_dryRunWithAll() {
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
 	set.String("issue-ref", "#123", "")
@@ -146,7 +146,7 @@ func ExampleTemplateCommand_dryRunWithAll() {
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = TemplateCommand.Run(c, []string{"template", "--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)

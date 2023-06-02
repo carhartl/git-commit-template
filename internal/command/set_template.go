@@ -12,8 +12,8 @@ var message = template.Must(
 	template.New("message").Parse("Subject (keep under 50 characters)\n\nContext/description (what and why){{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .Pair}}\n\nCo-authored-by: {{.Pair}}{{end}}"),
 )
 
-var TemplateCommand = &cli.Command{
-	Name:  "template",
+var SetTemplateCommand = &cli.Command{
+	Name:  "set",
 	Usage: "Set up template for commit message",
 	Flags: []cli.Flag{
 		&cli.BoolFlag{Name: "dry-run", Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},

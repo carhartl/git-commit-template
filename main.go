@@ -1,4 +1,3 @@
-// TODO: adapt help output
 package main
 
 import (
@@ -14,8 +13,8 @@ func main() {
 		Name:  "git-commit-template",
 		Usage: "Set up a useful template for commit messages",
 		Commands: []*cli.Command{
-			command.TemplateCommand,
-			command.ClearCommand,
+			command.SetTemplateCommand,
+			command.UnsetTemplateCommand,
 		},
 	}
 

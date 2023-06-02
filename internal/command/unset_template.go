@@ -7,8 +7,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var ClearCommand = &cli.Command{
-	Name:  "clear",
+var UnsetTemplateCommand = &cli.Command{
+	Name:  "unset",
 	Usage: "Unset current template",
 	Action: func(c *cli.Context) error {
 		// Ignore error here, file may have been removed manually...
