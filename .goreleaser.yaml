@@ -1,0 +1,27 @@
+---
+project_name: git-commit-template
+builds:
+  - env: [CGO_ENABLED=0]
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+nightly:
+  name_template: "{{ incpatch .Version }}-devel"
+  tag_name: devel
+  publish_release: true
+  keep_single_release: true
+release:
+  draft: true
+  replace_existing_draft: true
+  prerelease: auto
+brews:
+  - name: git-commit-template
+    tap:
+      owner: carhartl
+      name: homebrew-tap
+    dependencies:
+      - name: git
