@@ -1,4 +1,4 @@
-module github.com/carhartl/git-commit-message
+module github.com/carhartl/git-commit-template
 
 go 1.20
 

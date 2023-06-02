@@ -1,6 +1,6 @@
-# git-commit-message
+# git-commit-template
 
-[![CI](https://github.com/carhartl/git-commit-message/actions/workflows/ci.yml/badge.svg)](https://github.com/carhartl/git-commit-message/actions/workflows/ci.yml)
+[![CI](https://github.com/carhartl/git-commit-template/actions/workflows/ci.yml/badge.svg)](https://github.com/carhartl/git-commit-template/actions/workflows/ci.yml)
 
 CLI utility for managing a Git commit message template within the current project.
 
@@ -10,5 +10,5 @@ CLI utility for managing a Git commit message template within the current projec
 ## Installation
 
 ```bash
-go install github.com/carhartl/git-commit-message
+go install github.com/carhartl/git-commit-template
 ```
