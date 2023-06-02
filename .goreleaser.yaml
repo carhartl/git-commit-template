@@ -9,11 +9,6 @@ builds:
     goarch:
       - amd64
       - arm64
-release:
-  draft: true
-  replace_existing_draft: true
-  prerelease: auto
-  skip_upload: false
 brews:
   - name: git-commit-template
     tap:
