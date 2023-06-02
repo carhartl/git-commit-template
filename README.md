@@ -9,6 +9,25 @@ CLI utility for managing a Git commit message template within the current projec
 
 ## Installation
 
+With [Go](https://golang.org/):
+
 ```bash
 go install github.com/carhartl/git-commit-template
 ```
+
+Via [Homebrew](https://brew.sh/):
+
+```bash
+brew install carhartl/tap/git-commit-template
+```
+
+## Releasing
+
+```bash
+git tag v0.0.1
+op run --env-file .env -- goreleaser release --clean
+```
+
+## Also see
+
+https://cbea.ms/git-commit/
