@@ -20,16 +20,8 @@ var SetTemplateCommand = &cli.Command{
 		&cli.StringFlag{Name: "issue-ref", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
 		&cli.StringFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author to add to template", Value: ""},
 	},
+	Before: GitCheck,
 	Action: func(c *cli.Context) error {
-		_, err := os.Stat(".git")
-		if err != nil {
-			if os.IsNotExist(err) {
-				return cli.Exit("Must run in Git repository", 1)
-			} else {
-				return cli.Exit("Could not detect Git repository", 1)
-			}
-		}
-
 		var f *os.File
 		if c.Bool("dry-run") {
 			f = os.Stdout
