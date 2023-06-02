@@ -86,7 +86,45 @@ func TestSetCommitTemplateGitConfig(t *testing.T) {
 	}
 }
 
+func TestSetTemplateCommandOutsideOfGitRepo(t *testing.T) {
+	currentDir, _ := os.Getwd()
+	dir, err := os.MkdirTemp(os.TempDir(), "test")
+	if err != nil {
+		panic(err)
+	}
+
+	_ = os.Chdir(dir)
+
+	origExiter := cli.OsExiter
+	defer func() {
+		cli.OsExiter = origExiter
+	}()
+	var exitCodeFromOsExiter int
+	cli.OsExiter = func(exitCode int) {
+		exitCodeFromOsExiter = exitCode
+	}
+
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+
+	err = SetTemplateCommand.Run(c, []string{"set"}...)
+	if exitCodeFromOsExiter != 1 {
+		t.Errorf("Expected app to exit with 1: %d", err.(cli.ExitCoder).ExitCode())
+	}
+	expected := "Must run in Git repository"
+	if err.Error() != expected {
+		t.Errorf("Expected error not observed, wanted %q, got %q", expected, err.Error())
+	}
+
+	_ = os.Chdir(currentDir)
+	os.RemoveAll(dir)
+}
+
 func ExampleSetTemplateCommand_dryRunBasic() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
@@ -102,6 +140,9 @@ func ExampleSetTemplateCommand_dryRunBasic() {
 }
 
 func ExampleSetTemplateCommand_dryRunWithIssueRef() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
@@ -120,6 +161,9 @@ func ExampleSetTemplateCommand_dryRunWithIssueRef() {
 }
 
 func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")
@@ -138,6 +182,9 @@ func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
 }
 
 func ExampleSetTemplateCommand_dryRunWithAll() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", true, "")

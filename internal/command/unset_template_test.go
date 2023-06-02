@@ -75,3 +75,38 @@ func TestUnsetCommitTemplateGitConfig(t *testing.T) {
 		t.Errorf("Git config not unset")
 	}
 }
+
+func TestUnsetOutsideOfGitRepo(t *testing.T) {
+	currentDir, _ := os.Getwd()
+	dir, err := os.MkdirTemp(os.TempDir(), "test")
+	if err != nil {
+		panic(err)
+	}
+
+	_ = os.Chdir(dir)
+
+	origExiter := cli.OsExiter
+	defer func() {
+		cli.OsExiter = origExiter
+	}()
+	var exitCodeFromOsExiter int
+	cli.OsExiter = func(exitCode int) {
+		exitCodeFromOsExiter = exitCode
+	}
+
+	app := &cli.App{Writer: io.Discard, Commands: []*cli.Command{UnsetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+
+	err = UnsetTemplateCommand.Run(c, []string{"unset"}...)
+	if exitCodeFromOsExiter != 1 {
+		t.Errorf("Expected app to exit with 1: %d", err.(cli.ExitCoder).ExitCode())
+	}
+	expected := "Must run in Git repository"
+	if err.Error() != expected {
+		t.Errorf("Expected error not observed, wanted %q, got %q", expected, err.Error())
+	}
+
+	_ = os.Chdir(currentDir)
+	os.RemoveAll(dir)
+}
