@@ -24,8 +24,7 @@ brew install carhartl/tap/git-commit-template
 ## Releasing
 
 ```bash
-git tag v0.0.1
-op run --env-file .env -- goreleaser release --clean
+./release.sh 0.0.2
 ```
 
 ## Also see
