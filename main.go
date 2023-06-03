@@ -10,8 +10,9 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "git-commit-template",
-		Usage: "Set up a useful template for commit messages",
+		Name:    "git-commit-template",
+		Usage:   "Set up a useful template for commit messages",
+		Version: "v0.0.2",
 		Commands: []*cli.Command{
 			command.SetTemplateCommand,
 			command.UnsetTemplateCommand,
