@@ -37,6 +37,11 @@ func findCoAuthor(s string, path string) string {
 		return s
 	}
 
+	if fileName, found := strings.CutPrefix(path, "$HOME/"); found {
+		home, _ := os.UserHomeDir()
+		path = home + "/" + fileName
+	}
+
 	f, err := os.Open(path)
 	if err != nil {
 		return ""
