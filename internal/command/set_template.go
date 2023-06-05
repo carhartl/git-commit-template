@@ -1,9 +1,10 @@
-// TODO: read pairs from config with fuzzy matching
 package command
 
 import (
+	"bufio"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"text/template"
 
@@ -13,6 +14,7 @@ import (
 
 type EnvConfig struct {
 	IssuePrefix string `env:"GIT_COMMIT_TEMPLATE_ISSUE_PREFIX" env-default:"#"`
+	AuthorFile  string `env:"GIT_COMMIT_TEMPLATE_AUTHOR_FILE" env-default:"$HOME/.git-commit-template-authors"`
 }
 
 var message = template.Must(
@@ -24,6 +26,26 @@ func issueRef(s string, prefix string) string {
 		return s
 	}
 	return prefix + s
+}
+
+func findCoAuthor(s string, path string) string {
+	if match, _ := regexp.MatchString("^.+ <.+@.+>$", s); match {
+		return s
+	}
+
+	f, err := os.Open(path)
+	if err != nil {
+		return ""
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), s) {
+			return scanner.Text()
+		}
+	}
+	return ""
 }
 
 var SetTemplateCommand = &cli.Command{
@@ -57,7 +79,7 @@ var SetTemplateCommand = &cli.Command{
 		_ = message.Execute(f, struct {
 			Issue string
 			Pair  string
-		}{issueRef(c.String("issue-ref"), cfg.IssuePrefix), c.String("pair")})
+		}{issueRef(c.String("issue-ref"), cfg.IssuePrefix), findCoAuthor(c.String("pair"), cfg.AuthorFile)})
 
 		if !c.Bool("dry-run") {
 			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()

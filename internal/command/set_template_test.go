@@ -87,6 +87,33 @@ func TestSetCommitTemplateGitConfig(t *testing.T) {
 	}
 }
 
+func TestCoAuthorWithFuzzyMatchingFileConfig(t *testing.T) {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	set.String("pair", "", "")
+	_ = set.Parse([]string{"--pair", "john"})
+	c := cli.NewContext(app, set, nil)
+	os.Setenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE", ".git-commit-template-authors")
+	if err := os.WriteFile(".git-commit-template-authors", []byte("John Doe <john@example.com>"), 0666); err != nil {
+		panic(err)
+	}
+
+	_ = SetTemplateCommand.Run(c, []string{"set", "--pair", "john"}...)
+
+	content, err := os.ReadFile(".git/.gitmessage.txt")
+	if err != nil {
+		panic(err)
+	}
+	message := string(content)
+	expected := "Co-authored-by: John Doe <john@example.com>"
+	if !strings.Contains(message, expected) {
+		t.Errorf("Expected Co-authored-by line not part of message")
+	}
+}
+
 func TestSetTemplateCommandOutsideOfGitRepo(t *testing.T) {
 	currentDir, _ := os.Getwd()
 	dir, err := os.MkdirTemp(os.TempDir(), "test")

@@ -23,9 +23,10 @@ brew install carhartl/tap/git-commit-template
 
 ## Configuration
 
-| Env var                            | default |
-| ---------------------------------- | ------- |
-| `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`     |
+| Env var                            | default                              |
+| ---------------------------------- | ------------------------------------ |
+| `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`                                  |
+| `GIT_COMMIT_TEMPLATE_AUTHOR_FILE`  | `$HOME/.git-commit-template-authors` |
 
 ## Releasing
 
