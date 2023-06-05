@@ -58,6 +58,14 @@ Context/description (what and why)
 Co-authored-by: John Doe <john@example.com>
 ```
 
+Tip:
+
+Due to the executables naming you can also call it like so:
+
+```bash
+git commit-template ...
+```
+
 ## Configuration
 
 | Env var                            | default                              |
