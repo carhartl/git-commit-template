@@ -50,7 +50,7 @@ func findCoAuthor(s string, path string) string {
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), s) {
+		if strings.Contains(strings.ToLower(scanner.Text()), strings.ToLower(s)) {
 			return scanner.Text()
 		}
 	}
