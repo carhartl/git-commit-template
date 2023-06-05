@@ -29,6 +29,10 @@ func issueRef(s string, prefix string) string {
 }
 
 func findCoAuthor(s string, path string) string {
+	if len(s) == 0 {
+		return s
+	}
+
 	if match, _ := regexp.MatchString("^.+ <.+@.+>$", s); match {
 		return s
 	}
