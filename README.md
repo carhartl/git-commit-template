@@ -21,6 +21,12 @@ Via [Homebrew](https://brew.sh/):
 brew install carhartl/tap/git-commit-template
 ```
 
+## Configuration
+
+| Env var                            | default |
+| ---------------------------------- | ------- |
+| `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`     |
+
 ## Releasing
 
 ```bash

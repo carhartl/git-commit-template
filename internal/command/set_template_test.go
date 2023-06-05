@@ -23,6 +23,7 @@ func setupSetTemplateTest() func() {
 
 	return func() {
 		_ = os.Chdir(currentDir)
+		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
 		defer os.RemoveAll(dir)
 	}
 }
@@ -139,7 +140,7 @@ func ExampleSetTemplateCommand_dryRunBasic() {
 	// Context/description (what and why)
 }
 
-func ExampleSetTemplateCommand_dryRunWithIssueRef() {
+func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
 	teardown := setupSetTemplateTest()
 	defer teardown()
 
@@ -158,6 +159,49 @@ func ExampleSetTemplateCommand_dryRunWithIssueRef() {
 	// Context/description (what and why)
 	//
 	// Addresses: #123
+}
+
+func ExampleSetTemplateCommand_dryRunWithIssueRefNumber() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	set.Bool("dry-run", true, "")
+	set.String("issue-ref", "#123", "")
+	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
+	c := cli.NewContext(app, set, nil)
+
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "123"}...)
+
+	// Output:
+	// Subject (keep under 50 characters)
+	//
+	// Context/description (what and why)
+	//
+	// Addresses: #123
+}
+
+func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	set.Bool("dry-run", true, "")
+	set.String("issue-ref", "#123", "")
+	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
+	c := cli.NewContext(app, set, nil)
+	os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
+
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "123"}...)
+
+	// Output:
+	// Subject (keep under 50 characters)
+	//
+	// Context/description (what and why)
+	//
+	// Addresses: FOO-123
 }
 
 func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
