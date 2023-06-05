@@ -21,6 +21,43 @@ Via [Homebrew](https://brew.sh/):
 brew install carhartl/tap/git-commit-template
 ```
 
+## Usage
+
+Pass issue ref numbers with or without prefix:
+
+```bash
+git-commit-template set --issue 123 --dry-run
+git-commit-template set --issue #123 --dry-run
+```
+
+Produces:
+
+```
+Subject (keep under 50 characters)
+
+Context/description (what and why)
+
+Addresses: #123
+```
+
+Pass co-author with fuzzy matching entries in author file:
+
+```bash
+echo 'John Doe <john@example.com>' >> $HOME/.git-commit-template-authors
+echo 'Mary Tester <mary@example.com>' >> $HOME/.git-commit-template-authors
+git-commit-template set --pair doe --dry-run
+```
+
+Produces:
+
+```
+Subject (keep under 50 characters)
+
+Context/description (what and why)
+
+Co-authored-by: John Doe <john@example.com>
+```
+
 ## Configuration
 
 | Env var                            | default                              |
