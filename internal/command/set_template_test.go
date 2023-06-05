@@ -23,6 +23,7 @@ func setupSetTemplateTest() func() {
 
 	return func() {
 		_ = os.Chdir(currentDir)
+		os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
 		defer os.RemoveAll(dir)
 	}
