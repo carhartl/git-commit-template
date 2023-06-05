@@ -53,7 +53,7 @@ var SetTemplateCommand = &cli.Command{
 	Usage: "Set up template for commit message",
 	Flags: []cli.Flag{
 		&cli.BoolFlag{Name: "dry-run", Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},
-		&cli.StringFlag{Name: "issue-ref", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
+		&cli.StringFlag{Name: "issue", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
 		&cli.StringFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author to add to template", Value: ""},
 	},
 	Before: GitCheck,
@@ -79,7 +79,7 @@ var SetTemplateCommand = &cli.Command{
 		_ = message.Execute(f, struct {
 			Issue string
 			Pair  string
-		}{issueRef(c.String("issue-ref"), cfg.IssuePrefix), findCoAuthor(c.String("pair"), cfg.AuthorFile)})
+		}{issueRef(c.String("issue"), cfg.IssuePrefix), findCoAuthor(c.String("pair"), cfg.AuthorFile)})
 
 		if !c.Bool("dry-run") {
 			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()

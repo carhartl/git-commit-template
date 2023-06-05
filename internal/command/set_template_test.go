@@ -174,11 +174,11 @@ func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", false, "")
-	set.String("issue-ref", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
+	set.String("issue", "", "")
+	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "#123"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -195,11 +195,11 @@ func ExampleSetTemplateCommand_dryRunWithIssueRefNumber() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", false, "")
-	set.String("issue-ref", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
+	set.String("issue", "", "")
+	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "123"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -216,12 +216,12 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", false, "")
-	set.String("issue-ref", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
+	set.String("issue", "", "")
+	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 	os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
 
-	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "123"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
@@ -259,12 +259,12 @@ func ExampleSetTemplateCommand_dryRunWithAll() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	set.Bool("dry-run", false, "")
-	set.String("issue-ref", "", "")
+	set.String("issue", "", "")
 	set.String("pair", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"})
+	_ = set.Parse([]string{"--dry-run", "--issue", "#123", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
-	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"}...)
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
 	// Subject (keep under 50 characters)
