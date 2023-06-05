@@ -76,7 +76,7 @@ git commit-template ...
 ## Releasing
 
 ```bash
-./release.sh 0.0.2
+op run --env-file .env -- ./release.sh 0.1.0
 ```
 
 ## Also see
