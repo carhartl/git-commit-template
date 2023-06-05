@@ -128,7 +128,7 @@ func ExampleSetTemplateCommand_dryRunBasic() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
+	set.Bool("dry-run", false, "")
 	_ = set.Parse([]string{"--dry-run"})
 	c := cli.NewContext(app, set, nil)
 
@@ -146,8 +146,8 @@ func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
-	set.String("issue-ref", "#123", "")
+	set.Bool("dry-run", false, "")
+	set.String("issue-ref", "", "")
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
 	c := cli.NewContext(app, set, nil)
 
@@ -167,8 +167,8 @@ func ExampleSetTemplateCommand_dryRunWithIssueRefNumber() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
-	set.String("issue-ref", "#123", "")
+	set.Bool("dry-run", false, "")
+	set.String("issue-ref", "", "")
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
 	c := cli.NewContext(app, set, nil)
 
@@ -188,8 +188,8 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
-	set.String("issue-ref", "#123", "")
+	set.Bool("dry-run", false, "")
+	set.String("issue-ref", "", "")
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123"})
 	c := cli.NewContext(app, set, nil)
 	os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
@@ -210,8 +210,8 @@ func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
-	set.String("pair", "John Doe <john@example.com>", "")
+	set.Bool("dry-run", false, "")
+	set.String("pair", "", "")
 	_ = set.Parse([]string{"--dry-run", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
@@ -231,9 +231,9 @@ func ExampleSetTemplateCommand_dryRunWithAll() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", true, "")
-	set.String("issue-ref", "#123", "")
-	set.String("pair", "John Doe <john@example.com>", "")
+	set.Bool("dry-run", false, "")
+	set.String("issue-ref", "", "")
+	set.String("pair", "", "")
 	_ = set.Parse([]string{"--dry-run", "--issue-ref", "#123", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
