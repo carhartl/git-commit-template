@@ -60,7 +60,7 @@ Co-authored-by: John Doe <john@example.com>
 
 Tip:
 
-Due to the executables naming you can also call it like so:
+Due to the executable's naming you can also call it like so:
 
 ```bash
 git commit-template ...
@@ -68,7 +68,7 @@ git commit-template ...
 
 ## Configuration
 
-| Env var                            | default                              |
+| Env var                            | Default                              |
 | ---------------------------------- | ------------------------------------ |
 | `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`                                  |
 | `GIT_COMMIT_TEMPLATE_AUTHOR_FILE`  | `$HOME/.git-commit-template-authors` |
