@@ -8,13 +8,13 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/kelseyhightower/envconfig"
 	"github.com/urfave/cli/v2"
 )
 
-type EnvConfig struct {
-	IssuePrefix string `env:"GIT_COMMIT_TEMPLATE_ISSUE_PREFIX" env-default:"#"`
-	AuthorFile  string `env:"GIT_COMMIT_TEMPLATE_AUTHOR_FILE" env-default:"$HOME/.git-commit-template-authors"`
+type Config struct {
+	IssuePrefix string `split_words:"true" default:"#"`
+	AuthorFile  string `split_words:"true" default:"$HOME/.git-commit-template-authors"`
 }
 
 var message = template.Must(
@@ -67,8 +67,8 @@ var SetTemplateCommand = &cli.Command{
 	},
 	Before: GitCheck,
 	Action: func(c *cli.Context) error {
-		var cfg EnvConfig
-		err := cleanenv.ReadEnv(&cfg)
+		var cfg Config
+		err := envconfig.Process("GIT_COMMIT_TEMPLATE", &cfg)
 		if err != nil {
 			return cli.Exit("Reading environment variables failed", 1)
 		}
