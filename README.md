@@ -58,6 +58,23 @@ Context/description (what and why)
 Co-authored-by: John Doe <john@example.com>
 ```
 
+Multiple co-authors:
+
+```bash
+git-commit-template set --pair doe --pair mary --dry-run
+```
+
+Produces:
+
+```
+Subject (keep under 50 characters)
+
+Context/description (what and why)
+
+Co-authored-by: John Doe <john@example.com>
+Co-authored-by: Mary Tester <mary@example.com>
+```
+
 Tip:
 
 Due to the executable's naming you can also call it like so:
