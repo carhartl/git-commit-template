@@ -18,7 +18,7 @@ type Config struct {
 }
 
 var message = template.Must(
-	template.New("message").Parse("Subject (keep under 50 characters)\n\nContext/description (what and why){{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .Pair}}\n\nCo-authored-by: {{.Pair}}{{end}}"),
+	template.New("message").Parse("Subject (keep under 50 characters)\n\nContext/description (what and why){{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}"),
 )
 
 func issueRef(s string, prefix string) string {
@@ -26,6 +26,17 @@ func issueRef(s string, prefix string) string {
 		return s
 	}
 	return prefix + s
+}
+
+func findCoAuthors(s []string, path string) []string {
+	var coAuthors []string
+	for _, author := range s {
+		coAuthor := findCoAuthor(author, path)
+		if len(coAuthor) > 0 {
+			coAuthors = append(coAuthors, coAuthor)
+		}
+	}
+	return coAuthors
 }
 
 func findCoAuthor(s string, path string) string {
@@ -63,7 +74,7 @@ var SetTemplateCommand = &cli.Command{
 	Flags: []cli.Flag{
 		&cli.BoolFlag{Name: "dry-run", Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},
 		&cli.StringFlag{Name: "issue", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
-		&cli.StringFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author to add to template", Value: ""},
+		&cli.StringSliceFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author(s) to add to template", Value: cli.NewStringSlice()},
 	},
 	Before: GitCheck,
 	Action: func(c *cli.Context) error {
@@ -86,9 +97,9 @@ var SetTemplateCommand = &cli.Command{
 		}
 
 		_ = message.Execute(f, struct {
-			Issue string
-			Pair  string
-		}{issueRef(c.String("issue"), cfg.IssuePrefix), findCoAuthor(c.String("pair"), cfg.AuthorFile)})
+			Issue     string
+			CoAuthors []string
+		}{issueRef(c.String("issue"), cfg.IssuePrefix), findCoAuthors(c.StringSlice("pair"), cfg.AuthorFile)})
 
 		if !c.Bool("dry-run") {
 			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()

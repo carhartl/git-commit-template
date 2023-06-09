@@ -253,6 +253,28 @@ func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
 	// Co-authored-by: John Doe <john@example.com>
 }
 
+func ExampleSetTemplateCommand_dryRunWithMultipleCoAuthors() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	set.Bool("dry-run", false, "")
+	set.String("pair", "", "")
+	_ = set.Parse([]string{"--dry-run", "--pair", "John Doe <john@example.com>", "--pair", "Jane Foo <jane@example.com>"})
+	c := cli.NewContext(app, set, nil)
+
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>", "--pair", "Jane Foo <jane@example.com>"}...)
+
+	// Output:
+	// Subject (keep under 50 characters)
+	//
+	// Context/description (what and why)
+	//
+	// Co-authored-by: John Doe <john@example.com>
+	// Co-authored-by: Jane Foo <jane@example.com>
+}
+
 func ExampleSetTemplateCommand_dryRunWithAll() {
 	teardown := setupSetTemplateTest()
 	defer teardown()
