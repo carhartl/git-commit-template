@@ -83,6 +83,8 @@ Due to the executable's naming you can also call it like so:
 git commit-template ...
 ```
 
+E.g. use with your favorite Git alias...
+
 ## Configuration
 
 | Env var                            | Default                              |
