@@ -29,17 +29,26 @@ func issueRef(s string, prefix string) string {
 }
 
 func findCoAuthors(s []string, path string) []string {
+	if fileName, found := strings.CutPrefix(path, "$HOME/"); found {
+		home, _ := os.UserHomeDir()
+		path = home + "/" + fileName
+	}
+
+	f, _ := os.Open(path)
+	defer f.Close()
+
 	var coAuthors []string
 	for _, author := range s {
-		coAuthor := findCoAuthor(author, path)
+		coAuthor := findCoAuthor(author, f)
 		if len(coAuthor) > 0 {
 			coAuthors = append(coAuthors, coAuthor)
 		}
 	}
+
 	return coAuthors
 }
 
-func findCoAuthor(s string, path string) string {
+func findCoAuthor(s string, f *os.File) string {
 	if len(s) == 0 {
 		return s
 	}
@@ -48,16 +57,9 @@ func findCoAuthor(s string, path string) string {
 		return s
 	}
 
-	if fileName, found := strings.CutPrefix(path, "$HOME/"); found {
-		home, _ := os.UserHomeDir()
-		path = home + "/" + fileName
-	}
-
-	f, err := os.Open(path)
-	if err != nil {
+	if f == nil {
 		return ""
 	}
-	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -65,6 +67,7 @@ func findCoAuthor(s string, path string) string {
 			return scanner.Text()
 		}
 	}
+
 	return ""
 }
 
