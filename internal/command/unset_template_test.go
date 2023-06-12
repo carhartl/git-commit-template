@@ -10,6 +10,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const (
+	templateFile = ".git/.gitmessage.txt"
+)
+
 func setupClearTest() func() {
 	currentDir, _ := os.Getwd()
 	dir, err := os.MkdirTemp(os.TempDir(), "test")
@@ -32,7 +36,7 @@ func TestRemoveTemplateFile(t *testing.T) {
 
 	var err error
 
-	_, err = os.Create(".git/.gitmessage.txt")
+	_, err = os.Create(templateFile)
 	if err != nil {
 		panic(err)
 	}
@@ -45,9 +49,9 @@ func TestRemoveTemplateFile(t *testing.T) {
 
 	// If the respective file is no longer present, os.Stat returns an error, thus we must expect an error here
 	// if the file has been correctly removed!
-	_, err = os.Stat(".git/.gitmessage.txt")
+	_, err = os.Stat(templateFile)
 	if err == nil {
-		t.Errorf("Expected .git/.gitmessage.txt to not exist")
+		t.Errorf("Expected %s to not exist", templateFile)
 	}
 }
 
@@ -57,7 +61,7 @@ func TestUnsetCommitTemplateGitConfig(t *testing.T) {
 
 	var err error
 
-	err = exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()
+	err = exec.Command("git", "config", "--local", "commit.template", templateFile).Run()
 	if err != nil {
 		panic(err)
 	}
