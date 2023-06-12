@@ -12,6 +12,12 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const (
+	dryRunFlag   = "dry-run"
+	issueRefFlag = "issue"
+	coAuthorFlag = "pair"
+)
+
 type Config struct {
 	IssuePrefix string `split_words:"true" default:"#"`
 	AuthorFile  string `split_words:"true" default:"$HOME/.git-commit-template-authors"`
@@ -75,9 +81,9 @@ var SetTemplateCommand = &cli.Command{
 	Name:  "set",
 	Usage: "Set up template for commit message",
 	Flags: []cli.Flag{
-		&cli.BoolFlag{Name: "dry-run", Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},
-		&cli.StringFlag{Name: "issue", Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
-		&cli.StringSliceFlag{Name: "pair", Aliases: []string{"p"}, Usage: "Co-author(s) to add to template", Value: cli.NewStringSlice()},
+		&cli.BoolFlag{Name: dryRunFlag, Aliases: []string{"d"}, Usage: "Print template to stdout", Value: false},
+		&cli.StringFlag{Name: issueRefFlag, Aliases: []string{"i"}, Usage: "Issue reference to add to template", Value: ""},
+		&cli.StringSliceFlag{Name: coAuthorFlag, Aliases: []string{"p"}, Usage: "Co-author(s) to add to template", Value: cli.NewStringSlice()},
 	},
 	Before: GitCheck,
 	Action: func(c *cli.Context) error {
@@ -88,7 +94,7 @@ var SetTemplateCommand = &cli.Command{
 		}
 
 		var f *os.File
-		if c.Bool("dry-run") {
+		if c.Bool(dryRunFlag) {
 			f = os.Stdout
 		} else {
 			var err error
@@ -102,9 +108,9 @@ var SetTemplateCommand = &cli.Command{
 		_ = message.Execute(f, struct {
 			Issue     string
 			CoAuthors []string
-		}{issueRef(c.String("issue"), cfg.IssuePrefix), findCoAuthors(c.StringSlice("pair"), cfg.AuthorFile)})
+		}{issueRef(c.String(issueRefFlag), cfg.IssuePrefix), findCoAuthors(c.StringSlice(coAuthorFlag), cfg.AuthorFile)})
 
-		if !c.Bool("dry-run") {
+		if !c.Bool(dryRunFlag) {
 			err := exec.Command("git", "config", "--local", "commit.template", ".git/.gitmessage.txt").Run()
 			if err != nil {
 				return cli.Exit("Updating Git config failed", 1)
