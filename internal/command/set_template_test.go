@@ -94,8 +94,6 @@ func TestCoAuthorWithFuzzyMatchingFileConfig(t *testing.T) {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.String("pair", "", "")
-	_ = set.Parse([]string{"--pair", "john"})
 	c := cli.NewContext(app, set, nil)
 	os.Setenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE", ".git-commit-template-authors")
 	if err := os.WriteFile(".git-commit-template-authors", []byte("John Doe <john@example.com>"), 0666); err != nil {
@@ -156,8 +154,6 @@ func ExampleSetTemplateCommand_dryRunBasic() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	_ = set.Parse([]string{"--dry-run"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run"}...)
@@ -174,9 +170,6 @@ func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("issue", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123"}...)
@@ -195,9 +188,6 @@ func ExampleSetTemplateCommand_dryRunWithIssueRefNumber() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("issue", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
@@ -216,9 +206,6 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("issue", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue", "#123"})
 	c := cli.NewContext(app, set, nil)
 	os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
 
@@ -238,9 +225,6 @@ func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("pair", "", "")
-	_ = set.Parse([]string{"--dry-run", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>"}...)
@@ -259,9 +243,6 @@ func ExampleSetTemplateCommand_dryRunWithMultipleCoAuthors() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("pair", "", "")
-	_ = set.Parse([]string{"--dry-run", "--pair", "John Doe <john@example.com>", "--pair", "Jane Foo <jane@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>", "--pair", "Jane Foo <jane@example.com>"}...)
@@ -281,10 +262,6 @@ func ExampleSetTemplateCommand_dryRunWithAll() {
 
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
-	set.Bool("dry-run", false, "")
-	set.String("issue", "", "")
-	set.String("pair", "", "")
-	_ = set.Parse([]string{"--dry-run", "--issue", "#123", "--pair", "John Doe <john@example.com>"})
 	c := cli.NewContext(app, set, nil)
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123", "--pair", "John Doe <john@example.com>"}...)
