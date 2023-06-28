@@ -12,7 +12,7 @@ Command-line utility for managing a Git commit message template within the curre
 With [Go](https://golang.org/):
 
 ```bash
-go install github.com/carhartl/git-commit-template
+go install github.com/carhartl/git-commit-template/cmd/git-commit-template
 ```
 
 Via [Homebrew](https://brew.sh/):
