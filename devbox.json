@@ -4,7 +4,8 @@
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
     "scripts": {
       "lint": "golangci-lint run",
-      "test": "gotest ./..."
+      "test": "gotest ./...",
+      "release": "./release.sh"
     }
   }
 }
