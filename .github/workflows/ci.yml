@@ -47,7 +47,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         # Third-party action, pin to commit SHA!
         # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
-        uses: aquasecurity/trivy-action@b43daad0c3c96202fc5800b511dfae8e6ecce864
+        uses: aquasecurity/trivy-action@b77b85c0254bba6789e787844f0585cde1e56320
         with:
           scan-type: "fs"
           format: "sarif"
