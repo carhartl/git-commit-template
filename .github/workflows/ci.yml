@@ -18,13 +18,10 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-          cache: false
       - name: Lint
         # Third-party action, pin to commit SHA!
         # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
         uses: golangci/golangci-lint-action@3cfe3a4abbb849e10058ce4af15d205b6da42804
-        with:
-          version: v1.52.2
       - name: Test
         run: go test -v ./...
 
