@@ -19,7 +19,7 @@ jobs:
       - name: Lint
         # Third-party action, pin to commit SHA!
         # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
-        uses: golangci/golangci-lint-action@9d1e0624a798bb64f6c3cea93db47765312263dc
+        uses: golangci/golangci-lint-action@38e1018663fa5173f3968ea0777460d3de38f256
       - name: Test
         run: go test -v ./...
 
