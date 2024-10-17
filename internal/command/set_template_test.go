@@ -60,7 +60,7 @@ func TestWriteMessageToTemplateFile(t *testing.T) {
 		panic(err)
 	}
 	message := string(content)
-	expected := "Subject (keep under 50 characters)\n\nContext/description (what and why)"
+	expected := "Subject"
 	if message != expected {
 		t.Errorf("Expected message content does not match")
 	}
@@ -159,9 +159,7 @@ func ExampleSetTemplateCommand_dryRunBasic() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 }
 
 func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
@@ -175,9 +173,7 @@ func ExampleSetTemplateCommand_dryRunWithFullIssueRef() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Addresses: #123
 }
@@ -193,9 +189,7 @@ func ExampleSetTemplateCommand_dryRunWithIssueRefNumber() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Addresses: #123
 }
@@ -212,9 +206,7 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Addresses: FOO-123
 }
@@ -230,9 +222,7 @@ func ExampleSetTemplateCommand_dryRunWithCoAuthor() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Co-authored-by: John Doe <john@example.com>
 }
@@ -248,9 +238,7 @@ func ExampleSetTemplateCommand_dryRunWithMultipleCoAuthors() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--pair", "John Doe <john@example.com>", "--pair", "Jane Foo <jane@example.com>"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Co-authored-by: John Doe <john@example.com>
 	// Co-authored-by: Jane Foo <jane@example.com>
@@ -267,9 +255,7 @@ func ExampleSetTemplateCommand_dryRunWithAll() {
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "#123", "--pair", "John Doe <john@example.com>"}...)
 
 	// Output:
-	// Subject (keep under 50 characters)
-	//
-	// Context/description (what and why)
+	// Subject
 	//
 	// Addresses: #123
 	//

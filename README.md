@@ -33,9 +33,7 @@ git-commit-template set --issue #123 --dry-run
 Produces:
 
 ```
-Subject (keep under 50 characters)
-
-Context/description (what and why)
+Subject
 
 Addresses: #123
 ```
@@ -51,9 +49,7 @@ git-commit-template set --pair doe --dry-run
 Produces:
 
 ```
-Subject (keep under 50 characters)
-
-Context/description (what and why)
+Subject
 
 Co-authored-by: John Doe <john@example.com>
 ```
@@ -67,9 +63,7 @@ git-commit-template set --pair doe --pair mary --dry-run
 Produces:
 
 ```
-Subject (keep under 50 characters)
-
-Context/description (what and why)
+Subject
 
 Co-authored-by: John Doe <john@example.com>
 Co-authored-by: Mary Tester <mary@example.com>

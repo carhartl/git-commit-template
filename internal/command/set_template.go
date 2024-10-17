@@ -24,7 +24,7 @@ type Config struct {
 }
 
 var message = template.Must(
-	template.New("message").Parse("Subject (keep under 50 characters)\n\nContext/description (what and why){{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}"),
+	template.New("message").Parse("Subject{{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}"),
 )
 
 func issueRef(s string, prefix string) string {
