@@ -25,6 +25,7 @@ func setupSetTemplateTest() func() {
 		_ = os.Chdir(currentDir)
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
+		os.Unsetenv("GIT_COMMIT_TEMPLATE_TEMPLATE")
 		defer os.RemoveAll(dir)
 	}
 }
@@ -209,6 +210,21 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 	// Subject
 	//
 	// Addresses: FOO-123
+}
+
+func ExampleSetTemplateCommand_dryRunWithTemplateConfig() {
+	teardown := setupSetTemplateTest()
+	defer teardown()
+
+	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
+	set := flag.NewFlagSet("test", 0)
+	c := cli.NewContext(app, set, nil)
+	os.Setenv("GIT_COMMIT_TEMPLATE_TEMPLATE", "{{if .Issue}}{{.Issue}}{{end}} Subject{{if .CoAuthors}}\n\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}")
+
+	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
+
+	// Output:
+	// #123 Subject
 }
 
 func ExampleSetTemplateCommand_dryRunWithCoAuthor() {

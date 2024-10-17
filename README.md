@@ -81,10 +81,13 @@ E.g. use with your favorite Git alias...
 
 ## Configuration
 
-| Env var                            | Default                              |
-| ---------------------------------- | ------------------------------------ |
-| `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`                                  |
-| `GIT_COMMIT_TEMPLATE_AUTHOR_FILE`  | `$HOME/.git-commit-template-authors` |
+| Env var                            | Default                                                                                                                            |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `GIT_COMMIT_TEMPLATE_AUTHOR_FILE`  | `$HOME/.git-commit-template-authors`                                                                                               |
+| `GIT_COMMIT_TEMPLATE_ISSUE_PREFIX` | `#`                                                                                                                                |
+| `GIT_COMMIT_TEMPLATE_TEMPLATE`     | `Subject{{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}` |
+
+`GIT_COMMIT_TEMPLATE` is a Go template string.
 
 ## Releasing
 

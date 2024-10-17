@@ -19,13 +19,10 @@ const (
 )
 
 type Config struct {
-	IssuePrefix string `split_words:"true" default:"#"`
 	AuthorFile  string `split_words:"true" default:"$HOME/.git-commit-template-authors"`
+	IssuePrefix string `split_words:"true" default:"#"`
+	Template    string `split_words:"true" default:"Subject{{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}"`
 }
-
-var message = template.Must(
-	template.New("message").Parse("Subject{{if .Issue}}\n\nAddresses: {{.Issue}}{{end}}{{if .CoAuthors}}\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}"),
-)
 
 func issueRef(s string, prefix string) string {
 	if strings.HasPrefix(s, prefix) || len(s) == 0 {
@@ -105,6 +102,9 @@ var SetTemplateCommand = &cli.Command{
 			defer f.Close()
 		}
 
+		var message = template.Must(
+			template.New("message").Parse(cfg.Template),
+		)
 		_ = message.Execute(f, struct {
 			Issue     string
 			CoAuthors []string
