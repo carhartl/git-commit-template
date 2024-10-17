@@ -1,4 +1,5 @@
 ---
+version: 2
 project_name: git-commit-template
 builds:
   - main: ./cmd/git-commit-template
@@ -12,7 +13,7 @@ builds:
       - arm64
 brews:
   - name: git-commit-template
-    tap:
+    repository:
       owner: carhartl
       name: homebrew-tap
     dependencies:
