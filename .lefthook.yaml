@@ -1,17 +1,28 @@
 ---
+skip_output:
+  - meta # Skips lefthook version printing
+  - empty_summary # Skips summary heading when there are no steps to run
+  - execution # Skips printing any execution logs (but prints if the execution failed)
+  - execution_out # Skips printing execution output (but still prints failed commands output)
+  - skips # Skips "skip" printing (i.e. no files matched)
 pre-commit:
   parallel: true
   commands:
-    prettier:
-      tags: style
-      glob: "*.{md,yml,yaml}"
-      run: prettier --check {staged_files}
-    yamllint:
+    actionlint:
       tags: lint
-      glob: "*.{yml,yaml}"
-      run: |
-        yamllint -d "{extends: default, rules: {line-length: {max: 120}, comments: disable}}" {staged_files}
+      glob: ".github/workflows/*.yml"
+      run: actionlint {staged_files}
     golangci:
       tags: lint
       glob: "*.go"
       run: golangci-lint run ./...
+    prettier:
+      tags: style
+      glob: "*.{md,yaml,yml}"
+      stage_fixed: true
+      run: prettier --write {staged_files}
+    yamllint:
+      tags: lint
+      glob: "*.{yaml,yml}"
+      run: |
+        yamllint -d "{extends: default, rules: {line-length: {max: 120}, comments: disable}}" {staged_files}
