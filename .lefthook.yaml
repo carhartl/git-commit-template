@@ -21,6 +21,11 @@ pre-commit:
       glob: "*.{md,yaml,yml}"
       stage_fixed: true
       run: prettier --write {staged_files}
+    shfmt:
+      tags: style
+      glob: "*.{bash,sh}"
+      stage_fixed: true
+      run: shfmt -w {staged_files}
     yamllint:
       tags: lint
       glob: "*.{yaml,yml}"
