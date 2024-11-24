@@ -26,7 +26,7 @@ func setupSetTemplateTest() func() {
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_TEMPLATE")
-		defer os.RemoveAll(dir)
+		os.RemoveAll(dir)
 	}
 }
 
