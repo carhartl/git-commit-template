@@ -12,7 +12,7 @@ import (
 )
 
 func setupSetTemplateTest() func() {
-	currentDir, _ := os.Getwd()
+	cwd, _ := os.Getwd()
 	dir, err := os.MkdirTemp(os.TempDir(), "test")
 	if err != nil {
 		panic(err)
@@ -22,7 +22,7 @@ func setupSetTemplateTest() func() {
 	_ = exec.Command("git", "init").Run()
 
 	return func() {
-		_ = os.Chdir(currentDir)
+		_ = os.Chdir(cwd)
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
 		os.Unsetenv("GIT_COMMIT_TEMPLATE_TEMPLATE")
