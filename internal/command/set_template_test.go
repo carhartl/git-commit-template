@@ -18,8 +18,11 @@ func setupSetTemplateTest() func() {
 		panic(err)
 	}
 
-	_ = os.Chdir(dir)
-	_ = exec.Command("git", "init").Run()
+	cmd := exec.Command("git", "init")
+	cmd.Dir = dir
+	_ = cmd.Run()
+
+	_ = os.Chdir(dir) // Required for the git check hook of command to pass
 
 	return func() {
 		_ = os.Chdir(cwd)
