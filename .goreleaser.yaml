@@ -30,5 +30,3 @@ brews:
       owner: carhartl
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_PUBLISH_TOKEN }}"
-    dependencies:
-      - name: git
