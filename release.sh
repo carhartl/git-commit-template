@@ -9,6 +9,5 @@ grep -rl -E "$versionregex" --exclude-dir=.git --exclude-dir=.github --exclude-d
 git add .
 git commit -m "Update for v$1"
 git tag "v$1" -m "Release v$1"
-git push
-goreleaser release --clean
+git push --follow-tags
 git stash pop --index
