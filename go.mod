@@ -1,8 +1,6 @@
 module github.com/carhartl/git-commit-template
 
-go 1.22.0
-
-toolchain go1.22.2
+go 1.24.2
 
 require github.com/urfave/cli/v2 v2.27.0
 
