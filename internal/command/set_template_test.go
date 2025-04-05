@@ -26,10 +26,10 @@ func setupSetTemplateTest() func() {
 
 	return func() {
 		_ = os.Chdir(cwd)
-		os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
-		os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
-		os.Unsetenv("GIT_COMMIT_TEMPLATE_TEMPLATE")
-		os.RemoveAll(dir)
+		_ = os.Unsetenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE")
+		_ = os.Unsetenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX")
+		_ = os.Unsetenv("GIT_COMMIT_TEMPLATE_TEMPLATE")
+		_ = os.RemoveAll(dir)
 	}
 }
 
@@ -99,7 +99,7 @@ func TestCoAuthorWithFuzzyMatchingFileConfig(t *testing.T) {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
-	os.Setenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE", ".git-commit-template-authors")
+	_ = os.Setenv("GIT_COMMIT_TEMPLATE_AUTHOR_FILE", ".git-commit-template-authors")
 	if err := os.WriteFile(".git-commit-template-authors", []byte("John Doe <john@example.com>"), 0666); err != nil {
 		panic(err)
 	}
@@ -149,7 +149,7 @@ func TestSetTemplateCommandOutsideOfGitRepo(t *testing.T) {
 	}
 
 	_ = os.Chdir(currentDir)
-	os.RemoveAll(dir)
+	_ = os.RemoveAll(dir)
 }
 
 func ExampleSetTemplateCommand_dryRunBasic() {
@@ -205,7 +205,7 @@ func ExampleSetTemplateCommand_dryRunWithIssuePrefixConfig() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
-	os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
+	_ = os.Setenv("GIT_COMMIT_TEMPLATE_ISSUE_PREFIX", "FOO-")
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 
@@ -222,7 +222,7 @@ func ExampleSetTemplateCommand_dryRunWithTemplateConfig() {
 	app := &cli.App{Writer: os.Stdout, Commands: []*cli.Command{SetTemplateCommand}}
 	set := flag.NewFlagSet("test", 0)
 	c := cli.NewContext(app, set, nil)
-	os.Setenv("GIT_COMMIT_TEMPLATE_TEMPLATE", "{{if .Issue}}{{.Issue}}{{end}} Subject{{if .CoAuthors}}\n\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}")
+	_ = os.Setenv("GIT_COMMIT_TEMPLATE_TEMPLATE", "{{if .Issue}}{{.Issue}}{{end}} Subject{{if .CoAuthors}}\n\n{{end}}{{range .CoAuthors}}\nCo-authored-by: {{.}}{{end}}")
 
 	_ = SetTemplateCommand.Run(c, []string{"set", "--dry-run", "--issue", "123"}...)
 

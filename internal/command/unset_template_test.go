@@ -26,7 +26,7 @@ func setupClearTest() func() {
 
 	return func() {
 		_ = os.Chdir(currentDir)
-		defer os.RemoveAll(dir)
+		_ = os.RemoveAll(dir)
 	}
 }
 
@@ -112,5 +112,5 @@ func TestUnsetOutsideOfGitRepo(t *testing.T) {
 	}
 
 	_ = os.Chdir(currentDir)
-	os.RemoveAll(dir)
+	_ = os.RemoveAll(dir)
 }
