@@ -89,12 +89,6 @@ E.g. use with your favorite Git alias...
 
 `GIT_COMMIT_TEMPLATE` is a Go template string.
 
-## Releasing
-
-```bash
-op run --env-file .env -- ./release.sh 0.1.0
-```
-
 ## Also see
 
 https://cbea.ms/git-commit/
