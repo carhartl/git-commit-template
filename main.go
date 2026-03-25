@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/carhartl/git-commit-template/internal/command"
 	"github.com/urfave/cli/v2"
 )
 
@@ -14,8 +13,8 @@ func main() {
 		Usage:   "Set up a useful template for commit messages",
 		Version: "v0.3.0",
 		Commands: []*cli.Command{
-			command.SetTemplateCommand,
-			command.UnsetTemplateCommand,
+			SetTemplateCommand,
+			UnsetTemplateCommand,
 		},
 	}
 

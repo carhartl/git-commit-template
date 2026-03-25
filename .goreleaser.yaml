@@ -2,7 +2,7 @@
 version: 2
 project_name: git-commit-template
 builds:
-  - main: ./cmd/git-commit-template
+  - main: .
     env: [CGO_ENABLED=0]
     goos:
       - linux
