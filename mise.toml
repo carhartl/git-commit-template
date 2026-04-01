@@ -1,0 +1,14 @@
+[tools]
+go = "1.24.2"
+hk = "latest"
+pkl = "latest"
+
+[env]
+HK_MISE = 1
+
+[hooks]
+# Automatically install/update hooks when tools are installed
+postinstall = "hk install --mise"
+
+[tasks.pre-commit]
+run = "hk run pre-commit"
