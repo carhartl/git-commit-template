@@ -1,7 +1,8 @@
-amends "package://github.com/jdx/hk/releases/download/v1.39.0/hk@1.39.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v1.39.0/hk@1.39.0#/Builtins.pkl"
+amends "package://github.com/jdx/hk/releases/download/v2.7.1/hk@2.7.1#/Config.pkl"
 
-local linters = new Mapping<String, Step> {
+import "package://github.com/jdx/hk/releases/download/v2.7.1/hk@2.7.1#/Builtins.pkl"
+
+steps {
   ["actionlint"] = Builtins.actionlint
   ["golangci-lint"] = Builtins.golangci_lint
   ["mise"] = Builtins.mise
@@ -15,20 +16,5 @@ local linters = new Mapping<String, Step> {
   ["yamllint"] = (Builtins.yamllint) {
     check =
       "yamllint -d '{extends: default, rules: {line-length: {max: 120}, comments: disable}}' -s {{ files }}"
-  }
-}
-
-hooks {
-  ["pre-commit"] {
-    fix = true
-    stash = "git"
-    steps = linters
-  }
-  ["fix"] {
-    fix = true
-    steps = linters
-  }
-  ["check"] {
-    steps = linters
   }
 }
